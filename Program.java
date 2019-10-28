@@ -9,31 +9,36 @@ public class Program {
 	public static void main(String[] args) {
 		
 		Stopwatch sw = new Stopwatch();
-		int a = 1234567890;
-		int b = 12;
+		long a = 1234567890L;
+		long b = 12;
 		
 		
 		//НАИБОЛЬШИЙ ОБЩИЙ ДЕЛИТЕЛЬ
-		System.out.println("getGCF1 " + getGCF1(a, b) );
-		System.out.println("getGCF2 " + getGCF2(a, b) );
+		sw.start();
+		System.out.println("getGCF1 " + getGCF1(a, b) );//Поиск НОД, используя вычитание
+		System.out.println("getGCF1: "+ sw.getDuration()+" ms");
+		System.out.println("");
 		
+		sw.start();
+		System.out.println("getGCF2 " + getGCF2(a, b) );
+		System.out.println("getGCF2: "+ sw.getDuration()+" ms");//Поиск НОД через остаток от деления
 		System.out.println("");
 		
 		//ВОЗВЕДЕНИЕ В СТЕПЕНЬ
 		double base = 1.000_001;
 		int p = 1_000_000;
 		sw.start();
-		double res = power1(base, p);
+		double res = power1(base, p);//итеративный алгоритм
 		sw.stop();
 		System.out.println("power1: " + res + " (" + sw.getDuration() + " ms)" );
 		
 		sw.start();
-		res = power2(base, p);
+		res = power2(base, p);//Через степень двойки с домножением
 		sw.stop();
 		System.out.println("power2: " + res + " (" + sw.getDuration() + " ms)" );
 		
 		sw.start();
-		res = power3(base, p);
+		res = power3(base, p);//Возведение в степень используя двоичное разложение показателя степени
 		sw.stop();
 		System.out.println("power3: " + res + " (" + sw.getDuration() + " ms)" );
 		
@@ -41,17 +46,17 @@ public class Program {
 		p = 1_000_000_000;
 		
 		sw.start();
-		res = power1(base, p);
+		res = power1(base, p);//итеративный алгоритм
 		sw.stop();
 		System.out.println("power1: " + res + " (" + sw.getDuration() + " ms)" );
 		
 		sw.start();
-		res = power2(base, p);
+		res = power2(base, p);//Через степень двойки с домножением
 		sw.stop();
 		System.out.println("power2: " + res + " (" + sw.getDuration() + " ms)" );
 		
 		sw.start();
-		res = power3(base, p);
+		res = power3(base, p);//Возведение в степень используя двоичное разложение показателя степени
 		sw.stop();
 		System.out.println("power3: " + res + " (" + sw.getDuration() + " ms)" );
 		
@@ -60,7 +65,7 @@ public class Program {
 		int N = 10_000;
 		int cnt = 0;
 		
-		//isPrime1
+		//isPrime1(Через перебор делителей)
 		/*System.out.println("Test isPrime1: getting prime numbers count between 1 and " + N);
 		sw.start();
 		cnt = 0;
@@ -73,7 +78,7 @@ public class Program {
 		
 		
 		
-		//isPrime2
+		//isPrime2(Несколько оптимизаций перебора делителей)
 		System.out.println("Test isPrime2: getting prime numbers count between 1 and " + N);
 		sw.start();
 		cnt = 0;
@@ -84,7 +89,7 @@ public class Program {
 		System.out.println(sw.getDuration()+ " ms");
 		System.out.println("");
 		
-		//isPrime2UseArray(i)
+		//isPrime2UseArray(Несколько оптимизаций перебора делителей, с использованием массива)
 		System.out.println("Test isPrime2UseArray: getting prime numbers count between 1 and " + N);
 		sw.start();
 		arrayWithPrimes = new FactorArray<Integer>();
@@ -99,7 +104,7 @@ public class Program {
 		System.out.println(sw.getDuration()+ " ms");
 		System.out.println("");
 		
-		//EratosthenesSieve
+		//EratosthenesSieve(Решето Эратосфена)
 		System.out.println("Test EratosthenesSieve: getting prime numbers count between 1 and " + N);
 		sw.start();
 		EratosthenesSieve sieve = new EratosthenesSieve(N);
@@ -116,44 +121,45 @@ public class Program {
 		//ЧИСЛА ФИБОНАЧЧИ:
 		int n = 10_000;
 		/*sw.start();
-		System.out.println(getFNumRec(n).toString());
+		System.out.println(getFNumRec(n).toString());//getFNumRec использует рекурсию
 		System.out.println("getFNumRec: "+ sw.getDuration()+" ms");
 		System.out.println("");*/
 		
 		sw.start();
-		System.out.println(getFNumIter(n).toString());
+		System.out.println(getFNumIter(n).toString());//getFNumIter использует итерацию
 		System.out.println("getFNumIter: "+ sw.getDuration()+" ms");
 		System.out.println("");
 		
 		sw.start();
-		System.out.println(getFNumGold200(n).toString());
+		System.out.println(getFNumGold200(n).toString());//getFNumGold200 через формулу золотого сечения(используется BigDecimal, значение кв. корня из 5 взято с точностью до 200 знака после запятой)
 		System.out.println("getFNumGold: "+ sw.getDuration()+" ms");
 		System.out.println("");
 		
 		sw.start();
-		System.out.println(getFNum(n).toString()); 
+		System.out.println(getFNum(n).toString()); //getFNum вычисляет число Фибоначчи через умножение матриц 
 		System.out.println("getFNum: "+ sw.getDuration()+" ms");
 		System.out.println("");
 		
 		
-		/*
 		
+		//Находим, начиная с какого n getFNumGold даёт ошибочный результат
 		for(int i=1;i <= 1000;i++) {
 			BigInteger Fn1 = getFNum(i);
-			BigInteger Fn2 = getFNumGold(i);
+			BigInteger Fn2 = getFNumGold200(i);
 			if(Fn1.equals(Fn2))continue;
 			System.out.println("F("+ i + "): "+Fn1.toString());
 			break;
 		}
-		*/
+		
 		
 		
 		
 		
 	}
 	
-	private static int getGCF1(int a, int b) {
-		int min, max;
+	//Поиск НОД, используя вычитание
+	private static long getGCF1(long a, long b) {
+		long min, max;
 		if(a > b) {
 			max = a;
 			min = b;
@@ -177,9 +183,9 @@ public class Program {
 		
 	}
 	
-	
-	private static int getGCF2(int a, int b) {
-		int min, max;
+	//Поиск НОД через остаток от деления
+	private static long getGCF2(long a, long b) {
+		long min, max;
 		if(a > b) {
 			max = a;
 			min = b;
@@ -191,17 +197,18 @@ public class Program {
 		
 		if(min == 0)return max;
 		
-		int r = max%min;
+		long r = max%min;
 		
 		if(r == 0)return min;
 		
-		int r2 = min%r;
+		long r2 = min%r;
 		
 		if(r2==0)return r;
 		
 		return 1;
 	}
 	
+	//Простой итеративный алгоритм возведения в степень
 	private static double power1(double a, int b) {
 		double res = 1;
 		for(int i = 0; i < b; i++) 
@@ -209,6 +216,7 @@ public class Program {
 		return res;
 	}
 	
+	//Через степень двойки с домножением
 	private static double power2(double a, int b) {
 		double res = 1;
 		if(b >= 1)
@@ -224,6 +232,7 @@ public class Program {
 		return res;
 	}
 	
+	//Возведение в степень используя двоичное разложение показателя степени
 	private static double power3(double a, int b) {
 		double res = 1;
 		int power = b;
@@ -260,7 +269,7 @@ public class Program {
 		return res;
 	}
 	
-	
+	//Через простой перебор делителей
 	private static boolean isPrime1(int x) {
 		int c = 0;
 		
@@ -270,6 +279,7 @@ public class Program {
 		return (c == 2);
 	}
 	
+	//Через перебор делителей, с оптимизацией
 	private static boolean isPrime2(int x) {
 		
 		if(x == 2)return true;
@@ -283,6 +293,7 @@ public class Program {
 	}
 	
 	private static IDynamicArray<Integer> arrayWithPrimes;
+	//Через перебор делителей, с оптимизацией, испольует массив с простыми числами
 	private static boolean isPrime2UseArray(int x) {
 		if(x == 2)return true;
 		if(x%2 == 0)return false;
@@ -308,6 +319,7 @@ public class Program {
 		return true;
 	}
 	
+	//Нахождение числа Фибоначчи, рекурсивный метод
 	private static BigInteger getFNumRec(int n) {
 		if(n < 0)return null;
 		if(n == 0)return BigInteger.ZERO;
@@ -315,6 +327,7 @@ public class Program {
 		return getFNumRec(n-2).add(getFNumRec(n-1));
 	}
 	
+	//Нахождение числа Фибоначчи, итеративный метод
 	private static BigInteger getFNumIter(int n) {
 		if(n < 0)return null;
 		if(n == 0)return BigInteger.ZERO;
@@ -331,6 +344,7 @@ public class Program {
 		return Fn;
 	}
 	
+	//Нахождение числа Фибоначчи, по формуле золотого сечения (точность корня из 5 - 100 знаков после запятой)
 	private static BigInteger getFNumGold100(int n) {
 		if(n < 0)return null;
 		if(n == 0)return BigInteger.ZERO;
@@ -351,6 +365,7 @@ public class Program {
 		return res;
 	}
 	
+	//Нахождение числа Фибоначчи, по формуле золотого сечения (точность корня из 5 - 200 знаков после запятой)
 	private static BigInteger getFNumGold200(int n) {
 		if(n < 0)return null;
 		if(n == 0)return BigInteger.ZERO;
@@ -362,8 +377,8 @@ public class Program {
 		Fi = Fi.divide(new BigDecimal(2));
 		
 		
-		//BigDecimal bdRes = Fi.pow(n);
-		BigDecimal bdRes = powerBigDecimal(Fi,n);
+		BigDecimal bdRes = Fi.pow(n);
+		//BigDecimal bdRes = powerBigDecimal(Fi,n);
 		bdRes = bdRes.multiply(bdSqrt5);
 		bdRes = bdRes.divide(new BigDecimal(5));
 		bdRes = bdRes.add(new BigDecimal(0.5));
@@ -372,6 +387,7 @@ public class Program {
 		return res;
 	}
 	
+	//Нахождение числа Фибоначчи, с помощью умножения матриц
 	private static BigInteger getFNum(int n) {
 		if(n < 0)return null;
 		if(n == 0)return BigInteger.ZERO;
